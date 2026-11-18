@@ -1,0 +1,94 @@
+/* 样稿外壳：顶栏、手机框、屏幕层叠、控制条、五屏一览、桌面画板、?shot 模式、窄屏。
+   风格本身写在各方向页里（.dA / .dB …），这里不放任何品牌样式。 */
+:root{--b-ink:#1d1b19;--b-muted:#6f6a63;--b-line:#e2ddd4;--b-bg:#f6f4f0;--b-card:#fff}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font:14px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB",sans-serif;color:var(--b-ink);background:var(--b-bg)}
+a{color:inherit}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:10px 28px;background:rgba(246,244,240,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--b-line);font-size:13px}
+.topbar .back{text-decoration:none;color:var(--b-muted)}
+.topbar strong{font-size:15px}
+.topbar nav{margin-left:auto;display:flex;gap:14px}
+.topbar nav a{text-decoration:none;color:var(--b-muted)}
+.topbar nav a.cur{color:var(--b-ink);font-weight:600}
+.chip{display:inline-block;font-size:12px;line-height:1.5;padding:1px 9px;border-radius:99px;border:1px solid #d6b77a;color:#87672a;background:#fbf4e3;white-space:nowrap}
+.chip.gray{border-color:#cfcac2;color:#6f6a63;background:#f1eee9}
+.chip.dead{border-color:#d9c9bd;color:#8a3b2e;background:#eee9e2}
+
+.lab{display:grid;grid-template-columns:auto minmax(0,1fr);gap:56px;padding:28px 40px 12px;align-items:start}
+.stage-col{position:sticky;top:64px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.phone-wrap{width:calc(390px * var(--s,1));height:calc(844px * var(--s,1));position:relative}
+.phone{position:absolute;left:0;top:0;width:390px;height:844px;transform:scale(var(--s,1));transform-origin:0 0;overflow:hidden;border-radius:48px;background:#000;box-shadow:0 0 0 9px #141414,0 0 0 10px #3a3a3a,0 28px 60px rgba(30,20,10,.28);isolation:isolate}
+.scr{position:absolute;inset:0;visibility:hidden;overflow:hidden}
+.scr.on,.scr.off{visibility:visible}
+.scr.off{z-index:4}
+.static .scr,.static.scr{visibility:visible}
+.static *,.static *::before,.static *::after{animation:none!important;transition:none!important}
+.ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:430px}
+.ctrl button{font:inherit;font-size:13px;border:1px solid #cfc9c0;background:#fff;color:var(--b-ink);border-radius:99px;padding:5px 13px;cursor:pointer}
+.ctrl button:hover{border-color:#8f877c}
+.ctrl button.cur{background:var(--b-ink);color:#fff;border-color:var(--b-ink)}
+.ctrl .play{background:var(--b-ink);color:#fff;border-color:var(--b-ink);padding:6px 16px}
+.ctrl .play.on{background:#8a6a2a;border-color:#8a6a2a}
+.ctrl .vt{display:flex;flex-wrap:wrap;gap:0;width:100%;justify-content:center;margin-bottom:2px}
+.ctrl .vt button{border-radius:0;margin-left:-1px}
+.ctrl .vt button:first-child{border-radius:99px 0 0 99px;margin-left:0}
+.ctrl .vt button:last-child{border-radius:0 99px 99px 0}
+.hint{font-size:12px;color:var(--b-muted);text-align:center;margin:0}
+
+.notes{max-width:760px;padding-bottom:20px}
+.notes > h1{font-size:26px;line-height:1.3;margin:4px 0 6px}
+.notes > .lede{font-size:16px;color:#3d3833;margin:0 0 18px}
+.notes > h2{font-size:15px;margin:26px 0 8px;padding-top:14px;border-top:1px solid var(--b-line)}
+.notes > p,.notes li{color:#3d3833}
+.kv{display:grid;grid-template-columns:96px 1fr;gap:6px 14px;margin:8px 0}
+.kv dt{color:var(--b-muted)}
+.kv dd{margin:0}
+.figs{display:grid;gap:10px;margin:8px 0}
+.figs img{width:100%;border-radius:8px;display:block;box-shadow:0 0 0 1px var(--b-line)}
+.figs figcaption{font-size:12px;color:var(--b-muted);margin-top:4px}
+.figs figure{margin:0}
+
+.desk-wrap{width:720px;height:450px;max-width:100%;position:relative;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px #d8d2c8,0 14px 34px rgba(30,20,10,.14)}
+.desk{position:absolute;left:0;top:0;width:1440px;height:900px;transform:scale(.5);transform-origin:0 0;overflow:hidden}
+
+.strip-sec{padding:6px 40px 56px}
+.strip-sec > h2{font-size:15px;margin:0 0 10px;padding-top:14px;border-top:1px solid var(--b-line)}
+.strip-sec > h3{font-size:13px;font-weight:500;color:var(--b-muted);margin:14px 0 4px}
+.strip{display:flex;gap:22px;overflow-x:auto;padding:6px 2px 14px}
+.strip > figure{margin:0;cursor:pointer;flex:none}
+.strip .mini{width:195px;height:422px;position:relative;overflow:hidden;border-radius:24px;box-shadow:0 0 0 5px #141414,0 10px 26px rgba(30,20,10,.2);background:#000}
+.strip .mini > .scr{width:390px;height:844px;transform:scale(.5);transform-origin:0 0}
+.strip > figure > figcaption{font-size:12px;color:var(--b-muted);margin-top:8px;text-align:center}
+
+/* 序列帧：--sprite 横排 --frames 帧。.sprite.play 进场后按帧播放；.tt 由 proto.js 驱动转台，帧多时加 --cols 排成网格。 */
+.sprite{background:var(--sprite) 0 0/calc(var(--frames,8) * 100%) 100% no-repeat}
+.sprite.last{background-position:100% 0}
+.on .sprite.play{animation:sprite-run var(--dur,1.5s) calc(var(--ed,0s) + var(--wd,1s)) steps(var(--frames,8),jump-none) both}
+@keyframes sprite-run{from{background-position:0 0}to{background-position:100% 0}}
+.tt{position:absolute;background:var(--sprite) 50% 0/calc(var(--cols,var(--frames,17)) * 100%) calc(var(--rows,1) * 100%) no-repeat}
+.tt.live{background:none}
+.tt > i{position:absolute;inset:0;background:var(--sprite) 50% 0/calc(var(--cols,var(--frames,17)) * 100%) calc(var(--rows,1) * 100%) no-repeat}
+
+html.shot,html.shot body{background:transparent;overflow:hidden}
+html.shot .topbar,html.shot .notes,html.shot .strip-sec,html.shot .ctrl,html.shot .hint{display:none!important}
+html.shot .lab{display:block;padding:0}
+html.shot .stage-col{position:static;display:block}
+html.shot .phone-wrap{width:390px;height:844px}
+html.shot .phone{transform:none;border-radius:0;box-shadow:none}
+
+/* minmax(0,1fr)：用 1fr 时，最宽的不换行内容会把整页撑宽，手机上出现横向滚动。 */
+@media (max-width:980px){
+  .lab{grid-template-columns:minmax(0,1fr);padding:20px 16px}
+  .stage-col{position:static}
+  .strip-sec{padding:6px 16px 40px}
+  .desk-wrap{width:100%;height:auto;aspect-ratio:16/10}
+}
+@media (max-width:600px){
+  .topbar{flex-wrap:wrap;gap:6px 10px;padding:8px 14px}
+  .topbar nav{margin-left:0;width:100%;overflow-x:auto;white-space:nowrap}
+  .topbar .chip.gray{display:none}
+}
+
+:focus-visible{outline:3px solid #997536;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){.phone *,.phone *::before,.phone *::after{animation:none!important;transition:none!important}}

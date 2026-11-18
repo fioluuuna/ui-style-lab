@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UI Style Lab · 光影样稿</title>
+<link rel="stylesheet" href="proto.css">
+<style>
+/* 一个方向一个前缀（这里是 .dS）。基础样式写“最终状态”，动画用 both 从起始状态播到这里，
+   这样 .static 的缩略图和 ?shot 截图直接就是终态。 */
+@property --iris{syntax:'<percentage>';inherits:false;initial-value:150%}
+.dS{--bg:#0B0908;--light:#F3E8D4;--amber:#CC9E5E;--sub:#EEE7DB;--muted:#968C80;--day:#EEE9E0;--ink:#161412;
+  --leave:1000;font-family:"PingFang SC",-apple-system,sans-serif;color:var(--sub);background:var(--bg)}
+.dS .scr{background:var(--bg)}
+.dS .scr.off{animation:x-out .35s both}
+.dS .scr.off .amber{animation:x-out .25s both}
+.dS .s1{--ed:0s}.dS.via .s1{--ed:.4s}
+.dS .s2{--ed:0s}.dS.via .s2{--ed:.55s}
+.dS .s3{--ed:0s}.dS.via .s3{--ed:.7s}
+.dS.day.via .s3{--ed:1s}
+
+.dS .hero{position:absolute;left:95px;top:150px;width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#f4eee4 0 18%,transparent 19%),radial-gradient(circle at 65% 40%,#8a5a3c 0 16%,transparent 17%),radial-gradient(circle at 45% 68%,#e9e0d2 0 17%,transparent 18%),radial-gradient(circle at 50% 50%,#3d4a35 0 46%,transparent 47%)}
+.dS .cone{position:absolute;left:50%;top:-40px;width:300px;height:520px;margin-left:-150px;background:linear-gradient(to bottom,rgba(243,232,212,.30),rgba(243,232,212,0) 85%);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);transform-origin:50% 0}
+.dS .pool{position:absolute;left:70px;top:330px;width:250px;height:50px;border-radius:50%;background:radial-gradient(closest-side,rgba(243,232,212,.20),transparent)}
+.dS .tag{position:absolute;left:24px;top:64px;font:11px "SF Mono",Menlo,monospace;letter-spacing:.2em;color:var(--muted)}
+.dS h1{position:absolute;left:24px;top:470px;margin:0;font-size:34px;line-height:1.25;font-weight:600;color:var(--light)}
+.dS .amber{position:absolute;left:24px;bottom:72px;border:0;border-radius:99px;padding:12px 26px;font:inherit;font-size:15px;background:var(--amber);color:#1a140c;cursor:pointer}
+
+.dS .trk{position:absolute;left:24px;top:60px;right:24px;display:flex;align-items:baseline;gap:10px}
+.dS .trk .no{position:relative;overflow:hidden;font:34px/1 "SF Mono",Menlo,monospace;color:var(--light)}
+.dS .trk .no i{position:absolute;left:0;top:0;font-style:normal;opacity:0}
+.dS .trk .no b{display:block;font-weight:400}
+.dS .trk .nm{font-size:15px;font-weight:600}
+.dS .seg{margin-left:auto;display:flex;gap:5px}
+.dS .seg i{width:14px;height:3px;background:rgba(238,231,219,.25)}
+.dS .seg i.done{background:var(--sub)}
+.dS .seg i.cur{width:26px;background:var(--amber)}
+.dS .ring{position:absolute;left:123px;top:178px;width:84px;height:84px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(243,232,212,.8),0 0 24px rgba(243,232,212,.35)}
+.dS .cap{position:absolute;left:24px;right:24px;top:520px;text-align:center;font-size:14px;color:var(--muted)}
+.dS .bar{position:absolute;left:0;right:0;height:64px;background:#000;z-index:3}
+.dS .bar.t{top:0}.dS .bar.b{bottom:0}
+.dS .title{position:absolute;left:0;right:0;top:420px;text-align:center;margin:0;font-size:38px;font-weight:300;letter-spacing:.6em;color:var(--light)}
+.dS .credits{position:absolute;left:40px;right:40px;top:500px;margin:0;padding:0;list-style:none;font-size:13px}
+.dS .credits li{padding:7px 0;border-bottom:1px solid rgba(238,231,219,.12)}
+.dS .credits code{font:11px "SF Mono",Menlo,monospace;color:var(--amber);margin-right:14px}
+.dS .lights,.dS .iris{display:none;position:absolute;inset:0;z-index:5;pointer-events:none;background:radial-gradient(circle at 50% 40%,transparent var(--iris),var(--bg) calc(var(--iris) + 12%))}
+
+/* 亮场变体：只在 .day 下覆盖，暗场是默认。 */
+.dS.day .lit{background:var(--day);color:var(--ink)}
+.dS.day .lit .trk .no,.dS.day .lit .trk .nm{color:var(--ink)}
+.dS.day .lit .seg i{background:rgba(22,20,18,.18)}
+.dS.day .lit .seg i.done{background:var(--ink)}
+.dS.day .lit .seg i.cur{background:#A87436}
+.dS.day .lit .ring{box-shadow:0 0 0 1.5px rgba(22,20,18,.55)}
+.dS.day .lit .cap{color:#6A6158}
+
+.dS .s1.on .cone{animation:x-cone 1.4s calc(var(--ed) + .2s) cubic-bezier(.2,.7,.2,1) both}
+.dS .s1.on .hero{animation:x-focus 1.6s calc(var(--ed) + .6s) both}
+.dS .s1.on h1{animation:x-rise .7s calc(var(--ed) + 1.4s) both}
+.dS .s1.on .amber{animation:x-rise .6s calc(var(--ed) + 1.8s) both}
+.dS .s2.on .trk .no i{animation:x-roll-out .5s calc(var(--ed) + .2s) cubic-bezier(.5,0,.2,1) both}
+.dS .s2.on .trk .no b{animation:x-roll-in .5s calc(var(--ed) + .2s) cubic-bezier(.5,0,.2,1) both}
+.dS .s2.on .seg i.cur{animation:x-seg .6s calc(var(--ed) + .3s) both}
+.dS .s2.on .hero{animation:x-focus 1.2s calc(var(--ed) + .3s) both}
+.dS .s2.on .ring{animation:x-in .4s calc(var(--ed) + 1.3s) both,x-pulse 2.4s calc(var(--ed) + 1.7s) ease-in-out infinite}
+.dS .s2.on .cap{animation:x-rise .6s calc(var(--ed) + 1.2s) both}
+.dS .s2.on .amber{animation:x-rise .6s calc(var(--ed) + 1.6s) both}
+.dS.day .s2.on .lights{display:block;animation:x-iris-open 1.3s calc(var(--ed) + .1s) cubic-bezier(.4,0,.2,1) both}
+.dS.day .s2.off{animation:none}
+.dS.day .s2.off .iris{display:block;animation:x-iris-close .85s cubic-bezier(.6,0,.4,1) both}
+.dS .s3.on .bar.t{animation:x-bars-t .8s calc(var(--ed)) cubic-bezier(.6,0,.2,1) both}
+.dS .s3.on .bar.b{animation:x-bars-b .8s calc(var(--ed)) cubic-bezier(.6,0,.2,1) both}
+.dS .s3.on .cone{animation:x-cone 1.3s calc(var(--ed) + .5s) cubic-bezier(.2,.7,.2,1) both}
+.dS .s3.on .hero{animation:x-focus 2s calc(var(--ed) + .9s) both}
+.dS .s3.on .title{animation:x-spaced 1.8s calc(var(--ed) + 2.2s) cubic-bezier(.2,.7,.2,1) both}
+.dS .s3.on .credits li{animation:x-rise .5s calc(var(--ed) + 3.2s + var(--i) * .35s) both}
+
+@keyframes x-out{to{opacity:0}}
+@keyframes x-in{from{opacity:0}}
+@keyframes x-rise{from{opacity:0;transform:translateY(12px)}}
+@keyframes x-focus{from{filter:blur(12px) brightness(.35);transform:scale(1.07)}}
+@keyframes x-cone{from{opacity:0;transform:scaleY(.4)}}
+@keyframes x-pulse{50%{transform:scale(1.08);opacity:.6}}
+@keyframes x-roll-out{from{opacity:1;transform:none}to{opacity:0;transform:translateY(-100%)}}
+@keyframes x-roll-in{from{opacity:0;transform:translateY(100%)}}
+@keyframes x-seg{from{width:14px}}
+@keyframes x-bars-t{from{transform:translateY(-100%)}}
+@keyframes x-bars-b{from{transform:translateY(100%)}}
+@keyframes x-spaced{from{opacity:0;letter-spacing:1.4em}}
+@keyframes x-iris-open{from{--iris:0%}to{--iris:150%}}
+@keyframes x-iris-close{from{--iris:150%}to{--iris:0%}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <strong>UI Style Lab · 光影样稿</strong>
+  <span class="chip">待确认试作 · 未采纳</span>
+  <span class="chip gray">静态样稿，不是线上版本</span>
+</header>
+
+<div class="lab">
+  <div class="stage-col">
+    <div class="phone-wrap">
+      <div class="phone dS" data-variants="day" data-variant-labels='{"base":"暗场","day":"亮场（关灯揭晓）"}'>
+        <section class="scr s1" data-name="开场" data-hold="3800">
+          <div class="cone"></div><div class="pool"></div><div class="hero"></div>
+          <div class="tag">A1 · OPENING</div>
+          <h1>让一束花<br>成为此刻的主角</h1>
+          <button class="amber" data-go="next">开始</button>
+        </section>
+        <section class="scr s2 lit" data-name="制作" data-hold="4200">
+          <div class="trk"><span class="no"><i>A1</i><b>A2</b></span><span class="nm">制作</span><span class="seg"><i class="done"></i><i class="cur"></i><i></i></span></div>
+          <div class="hero"></div><div class="ring"></div>
+          <p class="cap">用局部光线强调主体，比较暗场与亮场。</p>
+          <button class="amber" data-go="next">揭晓</button>
+          <div class="lights"></div><div class="iris"></div>
+        </section>
+        <section class="scr s3" data-name="揭晓" data-hold="6500">
+          <div class="bar t"></div><div class="bar b"></div>
+          <div class="cone"></div><div class="pool"></div><div class="hero"></div>
+          <h2 class="title">花间</h2>
+          <ol class="credits"><li style="--i:0"><code>A1</code>光影与留白</li><li style="--i:1"><code>A2</code>纯 CSS 示意素材</li></ol>
+        </section>
+      </div>
+    </div>
+    <div class="ctrl"></div>
+    <p class="hint">点画面里的按钮也能前进；键盘 ← → 切换，空格播放。</p>
+  </div>
+  <article class="notes">
+    <h1>让同一份内容，呈现不同气质。</h1>
+    <p class="lede">这是可运行的三屏样稿：开场、制作、揭晓。切换暗场与亮场，观察背景、对比度和转场如何改变体验。图形是纯 CSS 示意，不代表真实产品渲染。复制模板后，用自己的内容和有权使用的素材继续探索。</p>
+  </article>
+</div>
+
+<section class="strip-sec">
+  <h2>三屏一览（点任意一屏跳过去）</h2>
+  <h3>暗场</h3><div class="strip"></div>
+  <h3>亮场</h3><div class="strip" data-variant="day"></div>
+</section>
+<script src="proto.js"></script>
+</body>
+</html>
